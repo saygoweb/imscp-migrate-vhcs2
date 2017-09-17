@@ -164,7 +164,8 @@ class iMSCP_Plugin_Migrator extends iMSCP_Plugin_Action
     {
         $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();
         return array(
-            '/reseller/migrator.php'    => $pluginDir . '/frontend/reseller/migrator.php'
+            '/reseller/migrator.php'     => $pluginDir . '/frontend/reseller/migrator.php',
+            '/reseller/migrate_user.php' => $pluginDir . '/frontend/reseller/migrate_user.php'
             // '/client/migrator.php'      => $pluginDir . '/frontend/client/migrator.php',
             // '/client/migrator_edit.php' => $pluginDir . '/frontend/client/migrator_edit.php',
             // '/client/test.php' => $pluginDir . '/frontend/client/test.php'
@@ -273,6 +274,14 @@ class iMSCP_Plugin_Migrator extends iMSCP_Plugin_Action
                         'title_class'        => 'users',
                         'privilege_callback' => array(
                             'name' => 'resellerHasCustomers'
+                        ),
+                        'pages'              => array(
+                            'migrate_user'   => array(
+                                'label'        => tr('Migrate User'),
+                                'uri'          => '/reseller/migrate_user.php',
+                                'title_class'  => '',
+                                'visible'      => false
+                            )
                         )
                     ));
                 }

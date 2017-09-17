@@ -18,9 +18,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-return array(
-    'Remote_Host'              => 'localhost',
-    'Remote_Database'          => 'vhcs2',
-    'Remote_Database_User'     => 'test',
-    'Remote_Database_Password' => 'test'
-);
+/**
+ * Connect to the remote database containing VHCS2 data
+ *
+ * @param bool $reconnect True forces a reconnect with new data from config
+ * @return PDO
+ */
+function migrator_remoteDB($reconnect = false) {
+    static $db = null;
+    if ($db && !$reconnect) {
+        return $db;
+    }
+    $host = 'localhost'; // For dev only TODO get from config CP 2017-09
+    $db   = 'vhcs2';
+    $user = 'test';
+    $pass = 'test';
+    $charset = 'utf8';
+    
+    $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+    $opt = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ];
+    $db = new PDO($dsn, $user, $pass, $opt);
+    return $db;
+}
+
